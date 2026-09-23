@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased] - YYYY-MM-DD
+### Changes
+- Add brotli module (`ngx_brotli`).
+- Build binaries in GitHub Actions.
+- Update nginx from 1.30.4 to 1.30.5.
+- Update headers-more from 0.39 to 0.40.
+- Update Ruby from 4.0.2 to 4.0.7.
 
 ## [1.19] - 2026-09-03
 ### Changes
