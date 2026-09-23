@@ -37,7 +37,7 @@ jobs:
       - name: Smoke test
         run: |
           docker run --rm -v "$PWD":/b heroku/heroku:${VERSION} bash -euc "
-            mkdir /tmp/t && tar xzf /b/$TARBALL -C /tmp/t
+            mkdir -p /tmp/t/logs && tar xzf /b/$TARBALL -C /tmp/t
             /tmp/t/nginx -V 2>&1 | grep -q ngx_brotli
             /tmp/t/nginx -V 2>&1 | grep -q http_sub_module
             printf 'events{}\nhttp{brotli on; brotli_static on; sub_filter a b;}\n' > /tmp/t/c
