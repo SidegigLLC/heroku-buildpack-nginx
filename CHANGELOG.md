@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased] - YYYY-MM-DD
 ### Changes
+- Add brotli module (`ngx_brotli`).
+- Build binaries in GitHub Actions.
+- Update nginx from 1.30.4 to 1.30.5.
+- Update headers-more from 0.39 to 0.40.
+- Update Ruby from 4.0.2 to 4.0.7.
+
+## [1.19] - 2026-09-03
+### Changes
+- Update nginx from 1.30.2 to 1.30.4.
+
+## [1.18] - 2026-05-26
+### Changes
+- Update nginx from 1.28.3 to 1.30.2.
+
+## [1.17] - 2026-04-14
+### Changes
+- Add support for Heroku-26.
+- Update nginx from 1.28.0 to 1.28.3.
+- Update headers-more-nginx-module from 0.38 to 0.39.
+- Update Ruby from 3.2.8 to 4.0.2.
+
+## [1.16] - 2026-02-26
+### Changes
+- Changed the S3 URLs used for downloads to use AWS' dual-stack (IPv6 compatible) endpoint.
 
 ## [1.15] - 2025-07-21
 ### Changes

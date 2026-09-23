@@ -1,0 +1,67 @@
+name: Build nginx
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/build_nginx
+      - .github/workflows/build_nginx.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-nginx-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { version: 22, arch: amd64, tarball: nginx-heroku-22.tgz }
+          - { version: 24, arch: amd64, tarball: nginx-heroku-24-amd64.tgz }
+          - { version: 24, arch: arm64, tarball: nginx-heroku-24-arm64.tgz }
+          - { version: 26, arch: amd64, tarball: nginx-heroku-26-amd64.tgz }
+          - { version: 26, arch: arm64, tarball: nginx-heroku-26-arm64.tgz }
+    name: build (heroku-${{ matrix.version }}, ${{ matrix.arch }})
+    runs-on: ${{ matrix.arch == 'arm64' && 'blacksmith-8vcpu-ubuntu-2404-arm' || 'blacksmith-8vcpu-ubuntu-2404' }}
+    env:
+      TARBALL: ${{ matrix.tarball }}
+      VERSION: ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build
+        run: docker run --rm --user root -v "$PWD":/buildpack -w /buildpack -e STACK=heroku-${VERSION} -e MAKEFLAGS=-j$(nproc) heroku/heroku:${VERSION}-build scripts/build_nginx "/buildpack/$TARBALL"
+      - name: Smoke test
+        run: |
+          docker run --rm -v "$PWD":/b heroku/heroku:${VERSION} bash -euc "
+            mkdir -p /tmp/t/logs && tar xzf /b/$TARBALL -C /tmp/t
+            /tmp/t/nginx -V 2>&1 | grep -q ngx_brotli
+            /tmp/t/nginx -V 2>&1 | grep -q http_sub_module
+            printf 'events{}\nhttp{brotli on; brotli_static on; sub_filter a b;}\n' > /tmp/t/c
+            /tmp/t/nginx -t -c /tmp/t/c -p /tmp/t"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.TARBALL }}
+          path: ${{ env.TARBALL }}
+
+  commit:
+    needs: build
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          merge-multiple: true
+      - name: Commit binaries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nginx-heroku-*.tgz
+          git diff --cached --quiet && exit 0
+          git commit -m "build: Rebuild nginx binaries"
+          git push

@@ -19,8 +19,9 @@ These are auto-selected based on the app's stack at build time.
 
 | [Heroku Stack](https://devcenter.heroku.com/articles/stack) | Nginx Version | PCRE version |
 |--------------|--------------:|-------------:|
-| [Heroku-22](https://devcenter.heroku.com/articles/heroku-22-stack) | 1.28.0 | PCRE1 (8.x) |
-| [Heroku-24](https://devcenter.heroku.com/articles/heroku-24-stack) | 1.28.0 | PCRE2 (10.x) |
+| [Heroku-22](https://devcenter.heroku.com/articles/heroku-22-stack) | 1.30.4 | PCRE1 (8.x) |
+| [Heroku-24](https://devcenter.heroku.com/articles/heroku-24-stack) | 1.30.4 | PCRE2 (10.x) |
+| [Heroku-26](https://devcenter.heroku.com/articles/heroku-26-stack) | 1.30.4 | PCRE2 (10.x) |
 
 ## Presets
 
@@ -129,7 +130,7 @@ _Only maintainers of this buildpack can make releases._
 _Replace "X.X" with the new version number._
 
 1. Update `CHANGELOG.md`, moving the **[unreleased] - YYYY-MM-DD** section contents into a new version section for version X.X
-2. Create a branch `preparing-release-X.X` with PR **Preparing release X.X**
+2. Create a branch `prepare-release` with PR **Prepare release X.X**
 3. Get the PR approved
 4. Merge the approved PR
 5. Create a new [GitHub release](https://github.com/heroku/heroku-buildpack-nginx/releases) for the new version, targetting `main`, with name and tag of form `vX.Y`.
