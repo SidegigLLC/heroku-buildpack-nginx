@@ -19,16 +19,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stack: [heroku-24, heroku-26]
-        arch: [amd64, arm64]
+        include:
+          - { version: 22, arch: amd64, tarball: nginx-heroku-22.tgz }
+          - { version: 24, arch: amd64, tarball: nginx-heroku-24-amd64.tgz }
+          - { version: 24, arch: arm64, tarball: nginx-heroku-24-arm64.tgz }
+          - { version: 26, arch: amd64, tarball: nginx-heroku-26-amd64.tgz }
+          - { version: 26, arch: arm64, tarball: nginx-heroku-26-arm64.tgz }
+    name: build (heroku-${{ matrix.version }}, ${{ matrix.arch }})
     runs-on: ${{ matrix.arch == 'arm64' && 'blacksmith-8vcpu-ubuntu-2404-arm' || 'blacksmith-8vcpu-ubuntu-2404' }}
     env:
-      TARBALL: nginx-${{ matrix.stack }}-${{ matrix.arch }}.tgz
-      VERSION: ${{ matrix.stack == 'heroku-24' && '24' || '26' }}
+      TARBALL: ${{ matrix.tarball }}
+      VERSION: ${{ matrix.version }}
     steps:
       - uses: actions/checkout@v7
       - name: Build
-        run: docker run --rm --user root -v "$PWD":/buildpack -w /buildpack -e STACK=${{ matrix.stack }} -e MAKEFLAGS=-j$(nproc) heroku/heroku:${VERSION}-build scripts/build_nginx "/buildpack/$TARBALL"
+        run: docker run --rm --user root -v "$PWD":/buildpack -w /buildpack -e STACK=heroku-${VERSION} -e MAKEFLAGS=-j$(nproc) heroku/heroku:${VERSION}-build scripts/build_nginx "/buildpack/$TARBALL"
       - name: Smoke test
         run: |
           docker run --rm -v "$PWD":/b heroku/heroku:${VERSION} bash -euc "
