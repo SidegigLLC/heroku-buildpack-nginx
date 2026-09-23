@@ -5,7 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased] - YYYY-MM-DD
+
+## [1.19] - 2026-09-03
 ### Changes
+- Update nginx from 1.30.2 to 1.30.4.
+
+## [1.18] - 2026-05-26
+### Changes
+- Update nginx from 1.28.3 to 1.30.2.
+
+## [1.17] - 2026-04-14
+### Changes
+- Add support for Heroku-26.
+- Update nginx from 1.28.0 to 1.28.3.
+- Update headers-more-nginx-module from 0.38 to 0.39.
+- Update Ruby from 3.2.8 to 4.0.2.
+
+## [1.16] - 2026-02-26
+### Changes
+- Changed the S3 URLs used for downloads to use AWS' dual-stack (IPv6 compatible) endpoint.
 
 ## [1.15] - 2025-07-21
 ### Changes
