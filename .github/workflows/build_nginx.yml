@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         stack: [heroku-24, heroku-26]
         arch: [amd64, arm64]
@@ -27,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Build
-        run: docker run --rm -v "$PWD":/buildpack -w /buildpack -e STACK=${{ matrix.stack }} -e MAKEFLAGS=-j$(nproc) heroku/heroku:${VERSION}-build scripts/build_nginx "/buildpack/$TARBALL"
+        run: docker run --rm --user root -v "$PWD":/buildpack -w /buildpack -e STACK=${{ matrix.stack }} -e MAKEFLAGS=-j$(nproc) heroku/heroku:${VERSION}-build scripts/build_nginx "/buildpack/$TARBALL"
       - name: Smoke test
         run: |
           docker run --rm -v "$PWD":/b heroku/heroku:${VERSION} bash -euc "
