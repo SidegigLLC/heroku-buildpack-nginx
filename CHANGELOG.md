@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased] - YYYY-MM-DD
 ### Changes
+- Update nginx from 1.30.6 to 1.30.7 to fix the "NGINX2root" vulnerabilities (CVE-2026-123007, CVE-2026-123633, CVE-2026-123634, CVE-2026-121810, CVE-2026-113425).
 - Add brotli module (`ngx_brotli`, brotli v1.2.1).
 - Build binaries in GitHub Actions.
 - Update nginx from 1.30.4 to 1.30.6.
